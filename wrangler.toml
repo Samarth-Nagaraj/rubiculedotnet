@@ -1,0 +1,11 @@
+name = "rubicule"
+compatibility_date = "2024-03-20"
+main = "src/worker.js"
+
+[assets]
+directory = "./dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "rubicule_db"
+database_id = "14e94a63-8954-41dd-a66b-404b6e39e03f"
