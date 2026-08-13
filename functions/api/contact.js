@@ -1,6 +1,25 @@
-export async function onRequestPost(context) {
+export async function onRequest(context) {
   try {
     const { request, env } = context;
+
+    // Handle CORS preflight just in case
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
+        }
+      });
+    }
+
+    if (request.method !== "POST") {
+      return new Response(JSON.stringify({ error: `Method ${request.method} not allowed on this endpoint.` }), {
+        status: 405,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
     
     // Parse the incoming JSON request
     const data = await request.json();
