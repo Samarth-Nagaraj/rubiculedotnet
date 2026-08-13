@@ -1,4 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="8" fill="#ED1C24" />
-  <rect x="10" y="10" width="12" height="12" rx="2" fill="#FFFFFF" transform="rotate(45 16 16)" />
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Left Main Body - Bright Red -->
+  <path d="M 16 70 L 16 30 L 33 20 L 33 40 L 50 30 L 50 50 Z" fill="#fc2629" />
+  <!-- Left Cavity Triangle (Inside wall) - Medium Red -->
+  <path d="M 33 20 L 50 30 L 33 40 Z" fill="#ca000f" />
+  
+  <!-- Right Main Body - Medium Red -->
+  <path d="M 84 70 L 50 50 L 50 30 L 67 40 L 67 20 L 84 30 Z" fill="#ca000f" />
+  <!-- Right Cavity Triangle (Inside wall) - Bright Red -->
+  <path d="M 67 20 L 67 40 L 50 30 Z" fill="#fc2629" />
+  
+  <!-- Bottom Face - Dark Red -->
+  <path d="M 16 70 L 50 50 L 84 70 L 50 90 Z" fill="#a31d1f" />
 </svg>
