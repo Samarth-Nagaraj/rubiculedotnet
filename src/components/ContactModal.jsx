@@ -1,9 +1,48 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Calendar } from 'lucide-react';
+import { X, Send, Calendar, CheckCircle2, Loader2 } from 'lucide-react';
 
 export function ContactModal({ isOpen, onClose }) {
-  const [step, setStep] = useState('initial'); // 'initial', 'form', 'calendar'
+  const [step, setStep] = useState('initial'); // 'initial', 'form', 'calendar', 'submitting', 'success', 'error'
+  const [formData, setFormData] = useState({ email: '', message: '' });
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleClose = () => {
+    onClose();
+    // Reset state after animation completes
+    setTimeout(() => {
+      setStep('initial');
+      setFormData({ email: '', message: '' });
+      setErrorMessage('');
+    }, 300);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.email || !formData.message) return;
+
+    setStep('submitting');
+    
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      
+      const result = await res.json();
+      
+      if (res.ok) {
+        setStep('success');
+      } else {
+        setStep('error');
+        setErrorMessage(result.error || 'Something went wrong.');
+      }
+    } catch (err) {
+      setStep('error');
+      setErrorMessage('Network error. Please try again later.');
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -14,7 +53,7 @@ export function ContactModal({ isOpen, onClose }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={handleClose}
             className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-[100]"
           />
           
@@ -32,7 +71,7 @@ export function ContactModal({ isOpen, onClose }) {
                   Let's Build Together
                 </h2>
                 <button 
-                  onClick={onClose}
+                  onClick={handleClose}
                   className="p-2 bg-white rounded-full text-gray-400 hover:text-rubicule-red hover:bg-red-50 transition-colors shadow-sm"
                 >
                   <X className="w-5 h-5" />
@@ -72,21 +111,67 @@ export function ContactModal({ isOpen, onClose }) {
                   </div>
                 )}
 
-                {step === 'form' && (
-                  <form className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
+                {(step === 'form' || step === 'submitting' || step === 'error') && (
+                  <form onSubmit={handleSubmit} className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Work Email</label>
-                      <input type="email" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-rubicule-red focus:ring-2 focus:ring-rubicule-red/20 outline-none transition-all" placeholder="you@company.com" />
+                      <input 
+                        type="email" 
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        disabled={step === 'submitting'}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-rubicule-red focus:ring-2 focus:ring-rubicule-red/20 outline-none transition-all disabled:opacity-50" 
+                        placeholder="you@company.com" 
+                      />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">How can we help?</label>
-                      <textarea rows="4" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-rubicule-red focus:ring-2 focus:ring-rubicule-red/20 outline-none transition-all resize-none" placeholder="Tell us about your automation or software needs..."></textarea>
+                      <textarea 
+                        rows="4" 
+                        required
+                        value={formData.message}
+                        onChange={(e) => setFormData({...formData, message: e.target.value})}
+                        disabled={step === 'submitting'}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-rubicule-red focus:ring-2 focus:ring-rubicule-red/20 outline-none transition-all resize-none disabled:opacity-50" 
+                        placeholder="Tell us about your automation or software needs..."
+                      ></textarea>
                     </div>
+                    
+                    {step === 'error' && (
+                      <p className="text-red-500 text-sm font-medium text-center bg-red-50 p-2 rounded-lg">{errorMessage}</p>
+                    )}
+
                     <div className="flex gap-3 pt-2">
-                      <button type="button" onClick={() => setStep('initial')} className="px-6 py-3 rounded-lg font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Back</button>
-                      <button type="button" className="flex-1 bg-rubicule-red hover:bg-rubicule-crimson text-white rounded-lg font-semibold transition-colors">Submit Request</button>
+                      <button type="button" disabled={step === 'submitting'} onClick={() => setStep('initial')} className="px-6 py-3 rounded-lg font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50">Back</button>
+                      <button type="submit" disabled={step === 'submitting'} className="flex-1 bg-rubicule-red hover:bg-rubicule-crimson text-white rounded-lg font-semibold transition-colors disabled:opacity-70 flex justify-center items-center gap-2">
+                        {step === 'submitting' ? (
+                          <><Loader2 className="w-5 h-5 animate-spin" /> Sending...</>
+                        ) : 'Submit Request'}
+                      </button>
                     </div>
                   </form>
+                )}
+
+                {step === 'success' && (
+                  <div className="text-center animate-in fade-in zoom-in duration-300 space-y-4 py-8">
+                    <motion.div 
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", bounce: 0.5 }}
+                      className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6"
+                    >
+                      <CheckCircle2 className="w-10 h-10 text-green-500" />
+                    </motion.div>
+                    <h3 className="text-2xl font-bold text-rubicule-charcoal">Message Received!</h3>
+                    <p className="text-gray-500">Thank you for reaching out. Our team will get back to you shortly.</p>
+                    <button 
+                      onClick={handleClose}
+                      className="mt-6 px-8 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors"
+                    >
+                      Close
+                    </button>
+                  </div>
                 )}
 
                 {step === 'calendar' && (

@@ -1,0 +1,8 @@
+name = "rubicule"
+compatibility_date = "2024-03-20"
+
+# Note: The database_id will be filled in by the user after running `npx wrangler d1 create`
+[[d1_databases]]
+binding = "DB"
+database_name = "rubicule_db"
+database_id = "paste-your-database-id-here"
