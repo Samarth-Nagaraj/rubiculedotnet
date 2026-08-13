@@ -30,17 +30,23 @@ export function ContactModal({ isOpen, onClose }) {
         body: JSON.stringify(formData)
       });
       
-      const result = await res.json();
-      
-      if (res.ok) {
-        setStep('success');
-      } else {
+      if (!res.ok) {
+        let errorMsg = `Server Error (${res.status})`;
+        try {
+          const result = await res.json();
+          errorMsg = result.error || errorMsg;
+        } catch (e) {
+          // If response isn't JSON, keep the default errorMsg
+        }
         setStep('error');
-        setErrorMessage(result.error || 'Something went wrong.');
+        setErrorMessage(errorMsg);
+        return;
       }
+
+      setStep('success');
     } catch (err) {
       setStep('error');
-      setErrorMessage('Network error. Please try again later.');
+      setErrorMessage('Network error. Please check your connection.');
     }
   };
 
