@@ -14,6 +14,13 @@ export async function onRequest(context) {
       });
     }
 
+    if (request.method === "GET") {
+      return new Response(JSON.stringify({ message: "Rubicule API is live and functioning!" }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
     if (request.method !== "POST") {
       return new Response(JSON.stringify({ error: `Method ${request.method} not allowed on this endpoint.` }), {
         status: 405,
