@@ -25,7 +25,7 @@ const horizontalSvg = `<svg viewBox="0 0 450 100" fill="none" xmlns="http://www.
     <path d="M 67 20 L 67 40 L 50 30 Z" fill="#fc2629" />
     <path d="M 16 70 L 50 50 L 84 70 L 50 90 Z" fill="#a31d1f" />
   </g>
-  <text x="110" y="65" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="800" font-size="52" fill="#1F2937" letter-spacing="-0.035em">RUBICULE</text>
+  <text x="110" y="65" font-family="'Inter', system-ui, sans-serif" font-weight="800" font-size="52" fill="#1F2937" letter-spacing="-0.035em">RUBICULE</text>
 </svg>`;
 
 // 3. Cube + Stacked Text
@@ -37,7 +37,7 @@ const stackedSvg = `<svg viewBox="0 0 300 350" fill="none" xmlns="http://www.w3.
     <path d="M 67 20 L 67 40 L 50 30 Z" fill="#fc2629" />
     <path d="M 16 70 L 50 50 L 84 70 L 50 90 Z" fill="#a31d1f" />
   </g>
-  <text x="150" y="300" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="800" font-size="55" fill="#1F2937" letter-spacing="-0.035em" text-anchor="middle">RUBICULE</text>
+  <text x="150" y="300" font-family="'Inter', system-ui, sans-serif" font-weight="800" font-size="55" fill="#1F2937" letter-spacing="-0.035em" text-anchor="middle">RUBICULE</text>
 </svg>`;
 
 const files = [
