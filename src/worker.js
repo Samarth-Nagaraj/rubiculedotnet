@@ -100,8 +100,7 @@ export default {
     // We catch that and return the index.html asset instead.
     const response = await env.ASSETS.fetch(request);
     if (response.status === 404) {
-      const indexRequest = new Request(new URL('/', request.url), request);
-      return env.ASSETS.fetch(indexRequest);
+      return env.ASSETS.fetch(new Request(new URL('/', request.url)));
     }
     
     return response;
