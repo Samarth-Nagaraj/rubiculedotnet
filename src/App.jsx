@@ -12,8 +12,12 @@ import { Company } from './pages/Company';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalStep, setModalStep] = useState('initial');
 
-  const openModal = () => setIsModalOpen(true);
+  const openModal = (step = 'initial') => {
+    setModalStep(step);
+    setIsModalOpen(true);
+  };
   const closeModal = () => setIsModalOpen(false);
 
   return (
@@ -28,7 +32,7 @@ function App() {
         </Routes>
         <Footer onOpenModal={openModal} />
         
-        <ContactModal isOpen={isModalOpen} onClose={closeModal} />
+        <ContactModal isOpen={isModalOpen} onClose={closeModal} initialStep={modalStep} />
       </div>
     </Router>
   );

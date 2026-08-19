@@ -5,3 +5,13 @@ CREATE TABLE contacts (
   message TEXT NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+DROP TABLE IF EXISTS resumes;
+CREATE TABLE resumes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  linkedin_url TEXT NOT NULL,
+  portfolio_url TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

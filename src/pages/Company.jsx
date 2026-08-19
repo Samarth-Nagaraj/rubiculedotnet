@@ -199,7 +199,7 @@ export function Company({ onOpenModal }) {
               <h4 className="text-xl font-bold text-rubicule-charcoal mb-2">Drop your resume</h4>
               <p className="text-gray-500 mb-8">Send us your CV and portfolio. We'll reach out if a role opens up.</p>
               <button 
-                onClick={onOpenModal}
+                onClick={() => onOpenModal('resume')}
                 className="w-full sm:w-auto px-8 py-4 rounded-xl bg-rubicule-charcoal hover:bg-gray-900 text-white font-bold transition-all flex items-center justify-center gap-3 mx-auto"
               >
                 <UploadCloud className="w-5 h-5" />

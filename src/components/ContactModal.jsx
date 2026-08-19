@@ -1,33 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Calendar, CheckCircle2, Loader2 } from 'lucide-react';
+import { X, Send, Calendar, CheckCircle2, Loader2, UploadCloud } from 'lucide-react';
 
-export function ContactModal({ isOpen, onClose }) {
-  const [step, setStep] = useState('initial'); // 'initial', 'form', 'calendar', 'submitting', 'success', 'error'
-  const [formData, setFormData] = useState({ email: '', message: '' });
+export function ContactModal({ isOpen, onClose, initialStep = 'initial' }) {
+  const [step, setStep] = useState('initial'); // 'initial', 'form', 'resume', 'calendar', 'submitting', 'success', 'error'
+  const [submitType, setSubmitType] = useState('contact'); // 'contact' or 'resume'
+  const [formData, setFormData] = useState({ name: '', email: '', message: '', linkedin: '', portfolio: '' });
   const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    if (isOpen) {
+      setStep(initialStep);
+      setFormData({ name: '', email: '', message: '', linkedin: '', portfolio: '' });
+      setErrorMessage('');
+      setSubmitType(initialStep === 'resume' ? 'resume' : 'contact');
+    }
+  }, [isOpen, initialStep]);
 
   const handleClose = () => {
     onClose();
-    // Reset state after animation completes
     setTimeout(() => {
       setStep('initial');
-      setFormData({ email: '', message: '' });
+      setFormData({ name: '', email: '', message: '', linkedin: '', portfolio: '' });
       setErrorMessage('');
     }, 300);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.email || !formData.message) return;
+    
+    if (submitType === 'contact' && (!formData.email || !formData.message)) return;
+    if (submitType === 'resume' && (!formData.name || !formData.email || !formData.linkedin)) return;
 
     setStep('submitting');
     
+    const endpoint = submitType === 'resume' ? '/api/resume' : '/api/contact';
+    const body = submitType === 'resume' 
+      ? { name: formData.name, email: formData.email, linkedin: formData.linkedin, portfolio: formData.portfolio }
+      : { email: formData.email, message: formData.message };
+
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(body)
       });
       
       if (!res.ok) {
@@ -36,7 +52,7 @@ export function ContactModal({ isOpen, onClose }) {
           const result = await res.json();
           errorMsg = result.error || errorMsg;
         } catch (e) {
-          // If response isn't JSON, keep the default errorMsg
+          // Keep default
         }
         setStep('error');
         setErrorMessage(errorMsg);
@@ -54,7 +70,6 @@ export function ContactModal({ isOpen, onClose }) {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -63,18 +78,16 @@ export function ContactModal({ isOpen, onClose }) {
             className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-[100]"
           />
           
-          {/* Modal Container */}
           <div className="fixed inset-0 flex items-center justify-center z-[101] p-4 pointer-events-none">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden pointer-events-auto flex flex-col"
+              className="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden pointer-events-auto flex flex-col max-h-[90vh]"
             >
-              {/* Header */}
-              <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+              <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50 flex-shrink-0">
                 <h2 className="text-xl font-bold text-rubicule-charcoal">
-                  Let's Build Together
+                  {submitType === 'resume' ? 'Join the Force' : "Let's Build Together"}
                 </h2>
                 <button 
                   onClick={handleClose}
@@ -84,13 +97,12 @@ export function ContactModal({ isOpen, onClose }) {
                 </button>
               </div>
 
-              {/* Body */}
-              <div className="p-8">
+              <div className="p-8 overflow-y-auto">
                 {step === 'initial' && (
                   <div className="space-y-4">
                     <p className="text-gray-600 mb-6 text-center">How would you like to proceed?</p>
                     <button 
-                      onClick={() => setStep('form')}
+                      onClick={() => { setStep('form'); setSubmitType('contact'); }}
                       className="w-full p-4 rounded-xl border-2 border-gray-100 hover:border-rubicule-red/30 hover:bg-red-50 transition-all flex items-center gap-4 group text-left"
                     >
                       <div className="bg-rubicule-red/10 p-3 rounded-lg group-hover:bg-rubicule-red transition-colors">
@@ -114,10 +126,23 @@ export function ContactModal({ isOpen, onClose }) {
                         <p className="text-sm text-gray-500">Schedule a direct call with our product experts.</p>
                       </div>
                     </button>
+                    
+                    <button 
+                      onClick={() => { setStep('resume'); setSubmitType('resume'); }}
+                      className="w-full p-4 rounded-xl border-2 border-gray-100 hover:border-rubicule-red/30 hover:bg-red-50 transition-all flex items-center gap-4 group text-left"
+                    >
+                      <div className="bg-rubicule-red/10 p-3 rounded-lg group-hover:bg-rubicule-red transition-colors">
+                        <UploadCloud className="w-6 h-6 text-rubicule-red group-hover:text-white transition-colors" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-rubicule-charcoal text-lg">Submit Resume</h4>
+                        <p className="text-sm text-gray-500">Apply to join our multidisciplinary team.</p>
+                      </div>
+                    </button>
                   </div>
                 )}
 
-                {(step === 'form' || step === 'submitting' || step === 'error') && (
+                {(step === 'form' || (submitType === 'contact' && (step === 'submitting' || step === 'error'))) && (
                   <form onSubmit={handleSubmit} className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Work Email</label>
@@ -158,6 +183,71 @@ export function ContactModal({ isOpen, onClose }) {
                     </div>
                   </form>
                 )}
+                
+                {(step === 'resume' || (submitType === 'resume' && (step === 'submitting' || step === 'error'))) && (
+                  <form onSubmit={handleSubmit} className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        disabled={step === 'submitting'}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-rubicule-red focus:ring-2 focus:ring-rubicule-red/20 outline-none transition-all disabled:opacity-50" 
+                        placeholder="John Doe" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                      <input 
+                        type="email" 
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        disabled={step === 'submitting'}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-rubicule-red focus:ring-2 focus:ring-rubicule-red/20 outline-none transition-all disabled:opacity-50" 
+                        placeholder="you@email.com" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">LinkedIn URL</label>
+                      <input 
+                        type="url" 
+                        required
+                        value={formData.linkedin}
+                        onChange={(e) => setFormData({...formData, linkedin: e.target.value})}
+                        disabled={step === 'submitting'}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-rubicule-red focus:ring-2 focus:ring-rubicule-red/20 outline-none transition-all disabled:opacity-50" 
+                        placeholder="https://linkedin.com/in/..." 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Portfolio / Personal Site (Optional)</label>
+                      <input 
+                        type="url" 
+                        value={formData.portfolio}
+                        onChange={(e) => setFormData({...formData, portfolio: e.target.value})}
+                        disabled={step === 'submitting'}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-rubicule-red focus:ring-2 focus:ring-rubicule-red/20 outline-none transition-all disabled:opacity-50" 
+                        placeholder="https://..." 
+                      />
+                    </div>
+                    
+                    {step === 'error' && (
+                      <p className="text-red-500 text-sm font-medium text-center bg-red-50 p-2 rounded-lg">{errorMessage}</p>
+                    )}
+
+                    <div className="flex gap-3 pt-2">
+                      <button type="button" disabled={step === 'submitting'} onClick={() => setStep('initial')} className="px-6 py-3 rounded-lg font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50">Back</button>
+                      <button type="submit" disabled={step === 'submitting'} className="flex-1 bg-rubicule-red hover:bg-rubicule-crimson text-white rounded-lg font-semibold transition-colors disabled:opacity-70 flex justify-center items-center gap-2">
+                        {step === 'submitting' ? (
+                          <><Loader2 className="w-5 h-5 animate-spin" /> Submitting...</>
+                        ) : 'Submit Application'}
+                      </button>
+                    </div>
+                  </form>
+                )}
 
                 {step === 'success' && (
                   <div className="text-center animate-in fade-in zoom-in duration-300 space-y-4 py-8">
@@ -169,8 +259,14 @@ export function ContactModal({ isOpen, onClose }) {
                     >
                       <CheckCircle2 className="w-10 h-10 text-green-500" />
                     </motion.div>
-                    <h3 className="text-2xl font-bold text-rubicule-charcoal">Message Received!</h3>
-                    <p className="text-gray-500">Thank you for reaching out. Our team will get back to you shortly.</p>
+                    <h3 className="text-2xl font-bold text-rubicule-charcoal">
+                      {submitType === 'resume' ? 'Application Received!' : 'Message Received!'}
+                    </h3>
+                    <p className="text-gray-500">
+                      {submitType === 'resume' 
+                        ? "Thank you for applying. We'll review your profile and reach out if there's a fit." 
+                        : "Thank you for reaching out. Our team will get back to you shortly."}
+                    </p>
                     <button 
                       onClick={handleClose}
                       className="mt-6 px-8 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors"

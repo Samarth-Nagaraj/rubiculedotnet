@@ -65,14 +65,9 @@ export function Footer({ onOpenModal }) {
             <h4 className="text-white font-semibold mb-4">Newsletter</h4>
             <p className="text-gray-400 text-sm mb-4">Stay updated with our latest tech and features.</p>
             <div className="flex gap-2">
-              <input 
-                type="email" 
-                placeholder="Enter email..." 
-                className="bg-gray-900 border border-gray-800 text-white rounded-lg px-4 py-2 w-full focus:outline-none focus:border-rubicule-red"
-              />
-              <button className="bg-rubicule-red p-2 rounded-lg text-white hover:bg-rubicule-crimson transition-colors flex-shrink-0">
-                <ArrowRight className="w-5 h-5" />
-              </button>
+              <div className="bg-gray-900 border border-gray-800 text-gray-500 rounded-lg px-4 py-2 w-full italic">
+                Stay tuned...
+              </div>
             </div>
           </div>
         </div>
