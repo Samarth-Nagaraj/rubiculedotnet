@@ -17,7 +17,7 @@ export function Navbar({ onOpenModal }) {
           </Link>
           
           <div className="hidden md:flex items-center space-x-8">
-            <a href="/#enterprise" className="text-sm font-medium text-gray-600 hover:text-rubicule-red transition-colors">Custom Enterprise</a>
+            <Link to="/" className="text-sm font-medium text-gray-600 hover:text-rubicule-red transition-colors">Home</Link>
             <Link to="/products" className="text-sm font-medium text-gray-600 hover:text-rubicule-red transition-colors">Products</Link>
             <Link to="/company" className="text-sm font-medium text-gray-600 hover:text-rubicule-red transition-colors">Company</Link>
             <Link to="/architecture" className="text-sm font-medium text-gray-600 hover:text-rubicule-red transition-colors">Custom AI</Link>
@@ -38,7 +38,7 @@ export function Navbar({ onOpenModal }) {
       {isOpen && (
         <div className="md:hidden bg-white border-b border-gray-100">
           <div className="px-4 pt-2 pb-6 space-y-4">
-            <a href="/#enterprise" className="block text-base font-medium text-gray-600" onClick={() => setIsOpen(false)}>Custom Enterprise</a>
+            <Link to="/" className="block text-base font-medium text-gray-600" onClick={() => setIsOpen(false)}>Home</Link>
             <Link to="/products" className="block text-base font-medium text-gray-600" onClick={() => setIsOpen(false)}>Products</Link>
             <Link to="/company" className="block text-base font-medium text-gray-600" onClick={() => setIsOpen(false)}>Company</Link>
             <Link to="/architecture" className="block text-base font-medium text-gray-600" onClick={() => setIsOpen(false)}>Custom AI</Link>
