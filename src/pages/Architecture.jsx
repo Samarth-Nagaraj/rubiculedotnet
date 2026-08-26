@@ -132,15 +132,22 @@ export function Architecture() {
         </div>
       </div>
 
-      {/* 3. The Blueprint for Measurable Value (Timeline) */}
+      {/* 3. The Blueprint for Measurable Value (Premium Timeline) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-40">
         <div className="text-center max-w-3xl mx-auto mb-20 md:mb-32">
           <h2 className="text-3xl md:text-5xl font-bold text-rubicule-charcoal">Our Blueprint for Measurable Value</h2>
         </div>
 
         <div className="relative max-w-5xl mx-auto">
-          {/* Connecting Line (Desktop: Horizontal, Mobile: Vertical) */}
-          <div className="absolute top-8 lg:top-1/2 left-8 lg:left-0 lg:w-full w-1 lg:h-1 h-full bg-gray-200 lg:-translate-y-1/2 rounded-full" />
+          {/* Glowing Track (Desktop: Horizontal, Mobile: Vertical) */}
+          <div className="absolute top-8 lg:top-1/2 left-8 lg:left-0 lg:w-full w-2 lg:h-2 h-full bg-gray-200/50 lg:-translate-y-1/2 rounded-full overflow-hidden shadow-inner">
+            <motion.div 
+               initial={{ height: 0, width: 0 }}
+               whileInView={{ height: '100%', width: '100%' }}
+               transition={{ duration: 1.5, ease: "easeInOut" }}
+               className="bg-gradient-to-b lg:bg-gradient-to-r from-rubicule-red/20 via-rubicule-red to-rubicule-red/20 w-full h-full shadow-[0_0_15px_rgba(237,28,36,0.5)]"
+            />
+          </div>
 
           <div className="grid lg:grid-cols-4 gap-12 lg:gap-8 relative z-10">
             {[
@@ -174,13 +181,24 @@ export function Architecture() {
                 className="relative pl-24 lg:pl-0 group"
               >
                 {/* Node */}
-                <div className="absolute left-0 lg:left-1/2 top-0 lg:-top-20 lg:-translate-x-1/2 w-16 h-16 bg-white rounded-full border-4 border-gray-200 group-hover:border-rubicule-red flex items-center justify-center shadow-md transition-colors duration-500 z-10 text-gray-400 group-hover:text-rubicule-red font-bold text-xl">
-                  {item.step}
+                <div className="absolute left-0 lg:left-1/2 top-0 lg:-top-20 lg:-translate-x-1/2 w-16 h-16 rounded-full flex items-center justify-center z-10">
+                  {/* Outer Glass Ring */}
+                  <div className="absolute inset-0 bg-white/20 backdrop-blur-md rounded-full border border-white/80 shadow-lg group-hover:border-rubicule-red/50 transition-colors duration-500" />
+                  {/* Glowing Center */}
+                  <div className="w-6 h-6 bg-rubicule-red rounded-full shadow-[0_0_15px_rgba(237,28,36,0.6)] group-hover:scale-125 transition-transform duration-500 animate-pulse" />
                 </div>
                 
-                <div className="lg:text-center lg:mt-8 pt-2 lg:pt-0">
-                  <h3 className="text-xl font-bold text-rubicule-charcoal mb-3 group-hover:text-rubicule-red transition-colors duration-300">{item.title}</h3>
-                  <p className="text-gray-600 leading-relaxed text-base">{item.desc}</p>
+                {/* Content Card */}
+                <div className="lg:mt-12 relative h-full">
+                  {/* Large Watermark Number */}
+                  <div className="absolute -top-8 -left-4 lg:left-1/2 lg:-translate-x-1/2 text-[100px] leading-none font-black text-gray-200/50 z-0 pointer-events-none transition-transform duration-500 group-hover:scale-110 group-hover:text-rubicule-red/10">
+                    {item.step}
+                  </div>
+                  
+                  <div className="relative z-10 bg-white/60 backdrop-blur-xl p-8 rounded-3xl border border-gray-100 shadow-xl group-hover:shadow-2xl group-hover:border-rubicule-red/20 transition-all duration-300 h-full flex flex-col">
+                    <h3 className="text-xl font-bold text-rubicule-charcoal mb-4 group-hover:text-rubicule-red transition-colors duration-300 relative z-10">{item.title}</h3>
+                    <p className="text-gray-600 leading-relaxed text-sm relative z-10 flex-grow">{item.desc}</p>
+                  </div>
                 </div>
               </motion.div>
             ))}
