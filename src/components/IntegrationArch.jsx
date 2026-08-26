@@ -88,7 +88,7 @@ export function IntegrationArch() {
               className="flex gap-4"
             >
               <Link to="/architecture" className="px-6 py-3 rounded-xl bg-rubicule-red hover:bg-rubicule-crimson text-white font-medium transition-colors shadow-[0_0_20px_-5px_rgba(237,28,36,0.6)]">
-                View Architecture Docs
+                Custom AI and Integrations
               </Link>
             </motion.div>
           </div>
