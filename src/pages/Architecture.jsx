@@ -190,12 +190,12 @@ export function Architecture() {
                 
                 {/* Content Card */}
                 <div className="lg:mt-12 relative h-full">
-                  {/* Large Watermark Number */}
-                  <div className="absolute -top-8 -left-4 lg:left-1/2 lg:-translate-x-1/2 text-[100px] leading-none font-black text-gray-200/50 z-0 pointer-events-none transition-transform duration-500 group-hover:scale-110 group-hover:text-rubicule-red/10">
-                    {item.step}
-                  </div>
-                  
-                  <div className="relative z-10 bg-white/60 backdrop-blur-xl p-8 rounded-3xl border border-gray-100 shadow-xl group-hover:shadow-2xl group-hover:border-rubicule-red/20 transition-all duration-300 h-full flex flex-col">
+                  <div className="relative z-10 bg-white/60 backdrop-blur-xl p-8 rounded-3xl border border-gray-100 shadow-xl group-hover:shadow-2xl group-hover:border-rubicule-red/20 transition-all duration-300 h-full flex flex-col overflow-hidden">
+                    {/* Large Watermark Number */}
+                    <div className="absolute -top-4 -right-4 text-[100px] leading-none font-black text-gray-200/40 z-0 pointer-events-none transition-transform duration-500 group-hover:scale-110 group-hover:text-rubicule-red/10">
+                      {item.step}
+                    </div>
+                    
                     <h3 className="text-xl font-bold text-rubicule-charcoal mb-4 group-hover:text-rubicule-red transition-colors duration-300 relative z-10">{item.title}</h3>
                     <p className="text-gray-600 leading-relaxed text-sm relative z-10 flex-grow">{item.desc}</p>
                   </div>

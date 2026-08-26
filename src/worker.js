@@ -96,13 +96,15 @@ export default {
     }
 
     // SPA Routing: If the request is not for an API and not found in assets, serve index.html.
-    // env.ASSETS.fetch will return 404 for unknown paths (like /products).
-    // We catch that and return the index.html asset instead.
-    const response = await env.ASSETS.fetch(request);
-    if (response.status === 404) {
-      return env.ASSETS.fetch(new Request(new URL('/', request.url)));
+    try {
+      const response = await env.ASSETS.fetch(request);
+      if (response.status === 404) {
+        return env.ASSETS.fetch(new Request(new URL('/index.html', request.url)));
+      }
+      return response;
+    } catch (err) {
+      // If fetching the asset fails entirely, fallback to index.html safely
+      return env.ASSETS.fetch(new Request(new URL('/index.html', request.url)));
     }
-    
-    return response;
   },
 };
