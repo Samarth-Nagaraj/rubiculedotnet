@@ -15,12 +15,12 @@ export function Footer({ onOpenModal }) {
           <p className="text-gray-400 text-lg mb-10 max-w-2xl mx-auto">Join the forward-thinking companies that rely on Rubicule for intelligent automation and powerful enterprise suites.</p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button onClick={onOpenModal} className="px-8 py-4 rounded-xl bg-rubicule-red hover:bg-rubicule-crimson text-white font-semibold text-lg transition-colors">
+            <button onClick={() => onOpenModal()} className="px-8 py-4 rounded-xl bg-rubicule-red hover:bg-rubicule-crimson text-white font-semibold text-lg transition-colors">
               Talk to an Expert
             </button>
-            <button onClick={onOpenModal} className="px-8 py-4 rounded-xl bg-transparent hover:bg-gray-800 text-white font-semibold text-lg transition-colors border border-gray-700">
+            {/* <button onClick={() => onOpenModal()} className="px-8 py-4 rounded-xl bg-transparent hover:bg-gray-800 text-white font-semibold text-lg transition-colors border border-gray-700">
               Request a Demo
-            </button>
+            </button> */}
           </div>
         </div>
 

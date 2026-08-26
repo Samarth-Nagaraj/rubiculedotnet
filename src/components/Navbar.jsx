@@ -21,7 +21,7 @@ export function Navbar({ onOpenModal }) {
             <Link to="/products" className="text-sm font-medium text-gray-600 hover:text-rubicule-red transition-colors">Products</Link>
             <Link to="/company" className="text-sm font-medium text-gray-600 hover:text-rubicule-red transition-colors">Company</Link>
             <Link to="/architecture" className="text-sm font-medium text-gray-600 hover:text-rubicule-red transition-colors">Integrations</Link>
-            <button onClick={onOpenModal} className="bg-rubicule-charcoal hover:bg-rubicule-red text-white px-6 py-2.5 rounded-full text-sm font-medium transition-colors">
+            <button onClick={() => onOpenModal()} className="bg-rubicule-charcoal hover:bg-rubicule-red text-white px-6 py-2.5 rounded-full text-sm font-medium transition-colors">
               Contact Us
             </button>
           </div>
