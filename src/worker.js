@@ -69,19 +69,31 @@ export default {
       }
 
       try {
-        const data = await request.json();
-        const { name, email, linkedin, portfolio } = data;
+        const formData = await request.formData();
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const linkedin = formData.get('linkedin');
+        const portfolio = formData.get('portfolio');
+        const file = formData.get('resume');
 
-        if (!name || !email || !linkedin) {
-          return new Response(JSON.stringify({ error: 'Name, email, and LinkedIn URL are required.' }), {
+        if (!name || !email) {
+          return new Response(JSON.stringify({ error: 'Name and email are required.' }), {
             status: 400,
             headers: { 'Content-Type': 'application/json' },
           });
         }
+        
+        let resume_file_key = null;
+        if (file && file.size > 0) {
+          resume_file_key = `${crypto.randomUUID()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+          await env.RESUMES_BUCKET.put(resume_file_key, file.stream(), {
+            httpMetadata: { contentType: file.type }
+          });
+        }
 
         const result = await env.DB.prepare(
-          'INSERT INTO resumes (name, email, linkedin_url, portfolio_url) VALUES (?, ?, ?, ?)'
-        ).bind(name, email, linkedin, portfolio || null).run();
+          'INSERT INTO resumes (name, email, linkedin_url, portfolio_url, resume_file_key) VALUES (?, ?, ?, ?, ?)'
+        ).bind(name, email, linkedin || null, portfolio || null, resume_file_key).run();
 
         return new Response(JSON.stringify({ success: true, result }), {
           status: 200,

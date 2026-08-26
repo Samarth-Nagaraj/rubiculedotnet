@@ -12,7 +12,8 @@ CREATE TABLE resumes (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   email TEXT NOT NULL,
-  linkedin_url TEXT NOT NULL,
+  linkedin_url TEXT,
   portfolio_url TEXT,
+  resume_file_key TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

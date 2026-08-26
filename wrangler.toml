@@ -11,3 +11,7 @@ not_found_handling = "single-page-application"
 binding = "DB"
 database_name = "rubicule_db"
 database_id = "14e94a63-8954-41dd-a66b-404b6e39e03f"
+
+[[r2_buckets]]
+binding = "RESUMES_BUCKET"
+bucket_name = "rubicule-resumes"

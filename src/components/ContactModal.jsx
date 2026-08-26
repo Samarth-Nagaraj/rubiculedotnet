@@ -5,13 +5,13 @@ import { X, Send, Calendar, CheckCircle2, Loader2, UploadCloud } from 'lucide-re
 export function ContactModal({ isOpen, onClose, initialStep = 'initial' }) {
   const [step, setStep] = useState('initial'); // 'initial', 'form', 'resume', 'calendar', 'submitting', 'success', 'error'
   const [submitType, setSubmitType] = useState('contact'); // 'contact' or 'resume'
-  const [formData, setFormData] = useState({ name: '', email: '', message: '', linkedin: '', portfolio: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', message: '', linkedin: '', portfolio: '', resumeFile: null });
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (isOpen) {
       setStep(initialStep);
-      setFormData({ name: '', email: '', message: '', linkedin: '', portfolio: '' });
+      setFormData({ name: '', email: '', message: '', linkedin: '', portfolio: '', resumeFile: null });
       setErrorMessage('');
       setSubmitType(initialStep === 'resume' ? 'resume' : 'contact');
     }
@@ -21,7 +21,7 @@ export function ContactModal({ isOpen, onClose, initialStep = 'initial' }) {
     onClose();
     setTimeout(() => {
       setStep('initial');
-      setFormData({ name: '', email: '', message: '', linkedin: '', portfolio: '' });
+      setFormData({ name: '', email: '', message: '', linkedin: '', portfolio: '', resumeFile: null });
       setErrorMessage('');
     }, 300);
   };
@@ -35,16 +35,27 @@ export function ContactModal({ isOpen, onClose, initialStep = 'initial' }) {
     setStep('submitting');
     
     const endpoint = submitType === 'resume' ? '/api/resume' : '/api/contact';
-    const body = submitType === 'resume' 
-      ? { name: formData.name, email: formData.email, linkedin: formData.linkedin, portfolio: formData.portfolio }
-      : { email: formData.email, message: formData.message };
+    let bodyData;
+    let fetchOptions = { method: 'POST' };
+
+    if (submitType === 'resume') {
+      bodyData = new FormData();
+      bodyData.append('name', formData.name);
+      bodyData.append('email', formData.email);
+      bodyData.append('linkedin', formData.linkedin);
+      bodyData.append('portfolio', formData.portfolio);
+      if (formData.resumeFile) {
+        bodyData.append('resume', formData.resumeFile);
+      }
+      fetchOptions.body = bodyData;
+    } else {
+      bodyData = { email: formData.email, message: formData.message };
+      fetchOptions.headers = { 'Content-Type': 'application/json' };
+      fetchOptions.body = JSON.stringify(bodyData);
+    }
 
     try {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
+      const res = await fetch(endpoint, fetchOptions);
       
       if (!res.ok) {
         let errorMsg = `Server Error (${res.status})`;
@@ -231,6 +242,16 @@ export function ContactModal({ isOpen, onClose, initialStep = 'initial' }) {
                         disabled={step === 'submitting'}
                         className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-rubicule-red focus:ring-2 focus:ring-rubicule-red/20 outline-none transition-all disabled:opacity-50" 
                         placeholder="https://..." 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Resume / CV (PDF, DOCX)</label>
+                      <input 
+                        type="file" 
+                        accept=".pdf,.doc,.docx"
+                        onChange={(e) => setFormData({...formData, resumeFile: e.target.files[0]})}
+                        disabled={step === 'submitting'}
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-rubicule-red focus:ring-2 focus:ring-rubicule-red/20 outline-none transition-all disabled:opacity-50 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-rubicule-red hover:file:bg-red-100" 
                       />
                     </div>
                     
