@@ -24,18 +24,18 @@ export default {
 
       try {
         const data = await request.json();
-        const { email, message } = data;
+        const { name, email, message } = data;
 
-        if (!email || !message) {
-          return new Response(JSON.stringify({ error: 'Email and message are required.' }), {
+        if (!name || !email || !message) {
+          return new Response(JSON.stringify({ error: 'Name, email and message are required.' }), {
             status: 400,
             headers: { 'Content-Type': 'application/json' },
           });
         }
 
         const result = await env.DB.prepare(
-          'INSERT INTO contacts (email, message) VALUES (?, ?)'
-        ).bind(email, message).run();
+          'INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)'
+        ).bind(name, email, message).run();
 
         return new Response(JSON.stringify({ success: true, result }), {
           status: 200,

@@ -133,7 +133,19 @@ export function ContactModal({ isOpen, onClose, initialStep = 'initial' }) {
                 {(step === 'form' || (submitType === 'contact' && (step === 'submitting' || step === 'error'))) && (
                   <form onSubmit={handleSubmit} className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Work Email</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        disabled={step === 'submitting'}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-rubicule-red focus:ring-2 focus:ring-rubicule-red/20 outline-none transition-all disabled:opacity-50" 
+                        placeholder="John Doe" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                       <input 
                         type="email" 
                         required
@@ -141,7 +153,7 @@ export function ContactModal({ isOpen, onClose, initialStep = 'initial' }) {
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                         disabled={step === 'submitting'}
                         className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-rubicule-red focus:ring-2 focus:ring-rubicule-red/20 outline-none transition-all disabled:opacity-50" 
-                        placeholder="you@company.com" 
+                        placeholder="you@email.com" 
                       />
                     </div>
                     <div>
