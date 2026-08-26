@@ -114,19 +114,7 @@ export function ContactModal({ isOpen, onClose, initialStep = 'initial' }) {
                       </div>
                     </button>
 
-                    <button 
-                      onClick={() => setStep('calendar')}
-                      className="w-full p-4 rounded-xl border-2 border-gray-100 hover:border-rubicule-red/30 hover:bg-red-50 transition-all flex items-center gap-4 group text-left"
-                    >
-                      <div className="bg-rubicule-red/10 p-3 rounded-lg group-hover:bg-rubicule-red transition-colors">
-                        <Calendar className="w-6 h-6 text-rubicule-red group-hover:text-white transition-colors" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-rubicule-charcoal text-lg">Book a Demo</h4>
-                        <p className="text-sm text-gray-500">Schedule a direct call with our product experts.</p>
-                      </div>
-                    </button>
-                    
+
                     <button 
                       onClick={() => { setStep('resume'); setSubmitType('resume'); }}
                       className="w-full p-4 rounded-xl border-2 border-gray-100 hover:border-rubicule-red/30 hover:bg-red-50 transition-all flex items-center gap-4 group text-left"
@@ -276,18 +264,6 @@ export function ContactModal({ isOpen, onClose, initialStep = 'initial' }) {
                   </div>
                 )}
 
-                {step === 'calendar' && (
-                  <div className="text-center animate-in fade-in slide-in-from-right-4 duration-300 space-y-6">
-                    <div className="w-16 h-16 bg-gray-50 rounded-2xl border border-gray-100 mx-auto flex items-center justify-center">
-                      <Calendar className="w-8 h-8 text-gray-400" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-rubicule-charcoal text-lg mb-2">Calendar Integration</h4>
-                      <p className="text-gray-500 text-sm">Here we would embed a Calendly widget or redirect to a booking page.</p>
-                    </div>
-                    <button type="button" onClick={() => setStep('initial')} className="px-6 py-2 rounded-lg font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Go Back</button>
-                  </div>
-                )}
               </div>
             </motion.div>
           </div>
