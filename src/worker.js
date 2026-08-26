@@ -95,16 +95,9 @@ export default {
       }
     }
 
-    // SPA Routing: If the request is not for an API and not found in assets, serve index.html.
-    try {
-      const response = await env.ASSETS.fetch(request);
-      if (response.status === 404) {
-        return env.ASSETS.fetch(new Request(new URL('/index.html', request.url)));
-      }
-      return response;
-    } catch (err) {
-      // If fetching the asset fails entirely, fallback to index.html safely
-      return env.ASSETS.fetch(new Request(new URL('/index.html', request.url)));
-    }
+    // SPA Routing: We let Cloudflare's native asset server handle SPA routing.
+    // Since we set `not_found_handling = "single-page-application"` in wrangler.toml,
+    // this will safely serve index.html for 404s without requiring fragile Request rewriting.
+    return env.ASSETS.fetch(request);
   },
 };
