@@ -20,7 +20,7 @@ export function Navbar({ onOpenModal }) {
             <a href="/#enterprise" className="text-sm font-medium text-gray-600 hover:text-rubicule-red transition-colors">Custom Enterprise</a>
             <Link to="/products" className="text-sm font-medium text-gray-600 hover:text-rubicule-red transition-colors">Products</Link>
             <Link to="/company" className="text-sm font-medium text-gray-600 hover:text-rubicule-red transition-colors">Company</Link>
-            <Link to="/architecture" className="text-sm font-medium text-gray-600 hover:text-rubicule-red transition-colors">Integrations</Link>
+            <Link to="/architecture" className="text-sm font-medium text-gray-600 hover:text-rubicule-red transition-colors">Custom AI</Link>
             <button onClick={() => onOpenModal()} className="bg-rubicule-charcoal hover:bg-rubicule-red text-white px-6 py-2.5 rounded-full text-sm font-medium transition-colors">
               Contact Us
             </button>
@@ -41,7 +41,7 @@ export function Navbar({ onOpenModal }) {
             <a href="/#enterprise" className="block text-base font-medium text-gray-600" onClick={() => setIsOpen(false)}>Custom Enterprise</a>
             <Link to="/products" className="block text-base font-medium text-gray-600" onClick={() => setIsOpen(false)}>Products</Link>
             <Link to="/company" className="block text-base font-medium text-gray-600" onClick={() => setIsOpen(false)}>Company</Link>
-            <Link to="/architecture" className="block text-base font-medium text-gray-600" onClick={() => setIsOpen(false)}>Integrations</Link>
+            <Link to="/architecture" className="block text-base font-medium text-gray-600" onClick={() => setIsOpen(false)}>Custom AI</Link>
             <button onClick={() => { setIsOpen(false); onOpenModal(); }} className="w-full text-left bg-rubicule-red text-white px-4 py-2.5 rounded-lg font-medium">
               Contact Us
             </button>
