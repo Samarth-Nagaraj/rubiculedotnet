@@ -29,7 +29,7 @@ export function ContactModal({ isOpen, onClose, initialStep = 'initial' }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (submitType === 'contact' && (!formData.email || !formData.message)) return;
+    if (submitType === 'contact' && (!formData.name || !formData.email || !formData.message)) return;
     if (submitType === 'resume' && (!formData.name || !formData.email || !formData.linkedin)) return;
 
     setStep('submitting');
@@ -49,7 +49,7 @@ export function ContactModal({ isOpen, onClose, initialStep = 'initial' }) {
       }
       fetchOptions.body = bodyData;
     } else {
-      bodyData = { email: formData.email, message: formData.message };
+      bodyData = { name: formData.name, email: formData.email, message: formData.message };
       fetchOptions.headers = { 'Content-Type': 'application/json' };
       fetchOptions.body = JSON.stringify(bodyData);
     }
